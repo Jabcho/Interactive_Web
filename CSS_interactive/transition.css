@@ -1,0 +1,19 @@
+/*가속도 계산 : cubic-bezier.com 이용 --> 간단한 커브 조작으로 가속도 함수 생성*/
+
+section {
+    perspective: 400px;
+}
+
+section article {
+    transform: scale(0.5);
+    transition-property: transform opacity;
+    transition-duration: 3s;
+    transition-delay: 0s;
+    transition-timing-function: cubic-bezier(.9,-0.06,.83,.67);
+}
+
+section:hover article {
+    transform: scale(1.5);
+    background: red;
+}
+

@@ -1,0 +1,219 @@
+main {
+    width: 100%; height: 100vh;
+    background: #333;
+    display: flex;
+
+    header {
+        width: 20%; height: 100%;
+        padding: 10vh 5vw;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: space-between;
+        justify-content: center;
+        position: relative;
+        z-index: 3; /* section과 aside 팝업 요소보다 위에 배치 */
+
+        h1 {
+            font-size: 0px; /* 안쪽의 자간과 줄 높이 초기화 */
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+
+            i {
+                font-size: 5vw;
+                margin-bottom: 15px;
+            }
+            span {
+                font: normal 0.8vw/1 "arial";
+            }
+
+        }
+
+        address {
+            font: normal 11px/1.2 "arial";
+            color: #888;
+        }
+    }
+
+    nav {
+        position: absolute;
+        top: 10vh;
+        right: 5vw;
+        z-index: 3; /* section과 aside 팝업 요소보다 위에 배치 */
+
+        ul {
+            display: flex;
+
+            li a {
+                font-size: 18px;
+                color: #bbb;
+                margin-right: 30px;
+            }
+        }
+    }
+    
+    section {
+        position: relative;
+        width: 80%; height: 100%;
+        display: flex;
+        padding-top: 140px;
+        z-index: 1; /* aside 팝업 요소보다 아래에 배치 */
+
+        article {
+            position: relative;
+            flex: 1;
+            padding: 70px 40px 100px;
+            opacity: 0.6;
+            transition: flex 1s, opacity 1s; // 하위 블록에 나오는 모든 flex, opacity 관련 프로퍼티는 1s의 간극을 두고 변화
+            z-index: 1; // hover되지 않을 때 1 설정
+            cursor: pointer;
+
+            &::before { // 마우스 호버 시 왼쪽에서 나타날 가상의 패널 요소
+                content: "";
+                display: block;
+                width: 80%; height: 95%;
+                background: #444;
+                position: absolute;
+                top: 0px; left: -200px; 
+                opacity: 0;
+                transition: 1s;
+            }
+
+            .inner {
+                width: 100%; height: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                align-content: space-between;
+                position: relative; // ::before 요소 위쪽으로 배치
+
+                .txt {
+                    width: 100%;
+                    transition: 0.5s;
+
+                    h2 {
+                        font: normal 2vw/1 "Alegreya Sans SC";
+                        color: #fff;
+                        margin-bottom: 40px;
+                        padding-top: 70px;
+                        transition: 1s;
+
+                        &::after { // h2 요소 하단 꾸밈 효과
+                            content: "";
+                            display: block;
+                            width: 40px; height: 2px;
+                            background: #777;
+                            margin-top: 20px;
+                            transition: 1.5s;
+                        }
+                    }
+
+                    p {
+                        font: 14px/1.4 "arial";
+                        color: #999;
+                    }
+                }
+
+                figure {
+                    width: 100%; height: 15vh;
+                    background: #777;
+                    transform-origin: left center; // 왼쪽 방향 기준으로 변형이 일어나도록 중심축 변경
+                    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+                    position: relative;
+                    overflow: hidden;
+                    filter: saturate(10%);
+                    transition: 1s;
+                    
+                    video {
+                        width: 100%; height: 100%;
+                        object-fit: cover;
+                        transform: scale(1.1); // 영상 가장자리 숨기기 위해 약간 확대
+                    }
+                }
+            }
+
+            &:hover {
+                flex: 1.5; // hover된 요소만 너비를 1.5배 증가
+                opacity: 1;
+                z-index: 2;
+
+                &::before { // hover시 ::before 변경
+                    left: 0px;
+                    opacity: 1;
+                }
+
+                .inner {
+                    .txt {
+                        width: 75%;
+    
+                        h2 {
+                            font-size: 5vw;
+                            padding-top: 0px;
+    
+                            &::after { // 밑줄선이 길어지면서 색이 오렌지색으로 바뀜
+                                width: 120px;
+                                background: orange;
+                            }
+                        }
+                    }
+
+                    figure {
+                        height: 25vh;
+                        filter: saturate(120%);
+                        transform: translateY(3vh);
+                    }
+                    
+                }
+            }
+        }
+    }
+
+    aside {
+        width: 100%; height: 100vh;
+        background: #222;
+        position: absolute;
+        top: 0px;
+        left: -100%; // 왼쪽 화면 바깥에 위치
+        opacity: 0;
+        z-index: 2; // section은 덮고, h1와 nav는 aside 위에 배치
+        box-sizing: border-box;
+        padding: 20vh 7vw 14vh 20vw;
+        display: flex;
+        justify-content: space-between;
+        transition: 1s;
+
+        &.on { // 클래스 on이 붙으면 왼쪽 화면에서 안쪽으로 이동 및 활성화
+            opacity: 1;
+            left: 0%;
+        }
+        .txt {
+            width: 25%;
+            height: 100%;
+        
+            h1 {
+                font: normal 6vw/1 "Alegreya SansSC";
+                color: #ddd;
+                margin-bottom: 20px;
+            }
+
+            p {
+                font: 1.1vw/1.3 "arial";
+                color: #666;
+                margin-bottom: 60px;
+            }
+
+            span {
+                cursor: pointer;
+                color: orange;
+            }
+        }
+        figure {
+            width: 72%; height: 100%;
+
+            video {
+                width: 100%; height: 100%;
+                object-fit: cover;
+            }
+        }
+
+    }
+}
